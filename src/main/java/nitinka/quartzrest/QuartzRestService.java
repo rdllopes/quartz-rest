@@ -1,39 +1,47 @@
 package nitinka.quartzrest;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import nitinka.jmetrics.JMetric;
-import nitinka.jmetrics.controller.dropwizard.JMetricController;
+import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.swagger.jaxrs.config.BeanConfig;
+import io.swagger.jaxrs.listing.ApiListingResource;
+import io.swagger.jaxrs.listing.SwaggerSerializers;
 import nitinka.quartzrest.config.QuartzRestServiceConfiguration;
 import nitinka.quartzrest.core.SchedulerFactory;
 import nitinka.quartzrest.resource.JobSchedulingResource;
 import nitinka.quartzrest.resource.SchedulerResource;
 import nitinka.quartzrest.resource.TriggerResource;
-import com.yammer.dropwizard.Service;
-import com.yammer.dropwizard.config.Bootstrap;
-import com.yammer.dropwizard.config.Environment;
 
-public class QuartzRestService extends Service<QuartzRestServiceConfiguration> {
+public class QuartzRestService extends Application<QuartzRestServiceConfiguration> {
 
-    @Override
-    public void initialize(Bootstrap<QuartzRestServiceConfiguration> bootstrap) {
-        bootstrap.setName("quartz-interface-service");
-        bootstrap.getObjectMapperFactory().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-    }
+	@Override
+	public void initialize(Bootstrap<QuartzRestServiceConfiguration> bootstrap) {
+		bootstrap.addBundle(new AssetsBundle("/META-INF/resources/webjars/swagger-ui/3.19.4/", "/swagger-ui"));
+	}
 
-    @Override
-    public void run(QuartzRestServiceConfiguration configuration, Environment environment) throws Exception {
-        SchedulerFactory.buildSchedulers(configuration.getSchedulerConfigsFolder());
+	@Override
+	public void run(QuartzRestServiceConfiguration configuration, Environment environment) throws Exception {
+		SchedulerFactory.buildSchedulers(configuration.getSchedulerConfigsFolder());
 
-        JMetric.initialize(configuration.getjMetricConfig());
-        environment.addResource(new JMetricController());
+		environment.jersey().register(new ApiListingResource());
+		environment.jersey().register(new SwaggerSerializers());
+		// environment.jersey().register(new ApieeService());
+		environment.jersey().register(new JobSchedulingResource());
+		environment.jersey().register(new SchedulerResource());
+		environment.jersey().register(new TriggerResource());
+		
+		environment.getObjectMapper().setSerializationInclusion(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL);
 
-        environment.addResource(new JobSchedulingResource());
-        environment.addResource(new SchedulerResource());
-        environment.addResource(new TriggerResource());
-    }
+	    BeanConfig config = new BeanConfig();
+	    config.setTitle("nitinka quartzrest");
+	    config.setVersion("1.0.0");
+	    config.setResourcePackage("nitinka.quartzrest.resource");
+	    config.setScan(true);
+	}
 
-    public static void main(String[] args) throws Exception {
-        args = new String[]{"server",args[0]};
-        new QuartzRestService().run(args);
-    }
+	public static void main(String[] args) throws Exception {
+		args = new String[] { "server", args[0] };
+		new QuartzRestService().run(args);
+	}
 }

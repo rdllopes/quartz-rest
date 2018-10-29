@@ -5,6 +5,8 @@ import nitinka.quartzrest.core.SchedulerHelper;
 import nitinka.quartzrest.util.ResponseBuilder;
 import org.quartz.SchedulerException;
 
+import io.swagger.annotations.Api;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Map;
@@ -13,6 +15,7 @@ import java.util.Map;
  * Http End Point that handles Job Scheduling
  */
 
+@Api
 @Path("/schedulers")
 public class SchedulerResource {
 

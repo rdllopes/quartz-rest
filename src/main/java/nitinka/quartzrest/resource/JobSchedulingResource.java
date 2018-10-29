@@ -14,6 +14,10 @@ import org.quartz.ObjectAlreadyExistsException;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,6 +29,7 @@ import java.util.regex.PatternSyntaxException;
  * Http End Point that handles Job Scheduling
  */
 
+@Api
 @Path("/jobs")
 public class JobSchedulingResource {
 
@@ -65,6 +70,7 @@ public class JobSchedulingResource {
      */
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
+    @Operation(description="create a job")
     @POST
     public RunTimeJobDetail scheduleJob(JobSchedulingInfo jobSchedulingInfo) throws ClassNotFoundException, JobAlreadyExistsException, SchedulerException {
         try {

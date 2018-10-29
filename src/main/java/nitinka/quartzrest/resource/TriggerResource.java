@@ -4,6 +4,8 @@ import nitinka.quartzrest.core.SchedulerHelper;
 import nitinka.quartzrest.util.ResponseBuilder;
 import org.quartz.*;
 
+import io.swagger.annotations.Api;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
@@ -11,6 +13,7 @@ import javax.ws.rs.core.MediaType;
  * Http End Point that handles Job Scheduling
  */
 
+@Api
 @Path("/triggers")
 public class TriggerResource {
 
