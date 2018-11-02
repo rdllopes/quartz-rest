@@ -9,19 +9,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SchedulerFactory {
-    private static Map<String, SchedulerHelper> schedulers = new HashMap<String, SchedulerHelper>();
+    private static final Map<String, SchedulerHelper> schedulers = new HashMap<>();
     private static SchedulerHelper defaultScheduler;
 
     public static void buildSchedulers(String schedulerConfigsFolder) throws SchedulerException {
         File folder = new File(schedulerConfigsFolder);
-        for(File scheduleConfigFile : folder.listFiles()) {
+        for (File scheduleConfigFile : folder.listFiles()) {
             StdSchedulerFactory sf = new StdSchedulerFactory();
             sf.initialize(scheduleConfigFile.getAbsolutePath());
             Scheduler scheduler = sf.getScheduler();
             scheduler.start();
             schedulers.put(scheduler.getSchedulerName(), new SchedulerHelper(scheduler));
 
-            if(defaultScheduler == null)
+            if (defaultScheduler == null)
                 defaultScheduler = schedulers.get(scheduler.getSchedulerName());
         }
     }

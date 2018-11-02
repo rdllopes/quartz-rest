@@ -1,0 +1,23 @@
+{
+  "jobInfo": {
+    "jobClass": "nitinka.quartzrest.job.AddJob",
+    "name": "Just adding job",
+    "group": "group1",
+    "description": "Just adding job",
+    "storeDurably": true,
+    "requestRecovery": true,
+    "jobParams": {}
+  },
+  "scheduleInfo": {
+    "cronScheduleInfo": {
+      "cronExpression": "0/5 * * * * ?",
+      "misfireInstruction": 0
+    },
+    "triggerInfo": {
+      "startDate": "2018-10-31T17:07:08.069Z",
+      "name": "trigger for adding job",
+      "group": "group1"
+    },
+    "simpleSchedule": false
+  }
+}

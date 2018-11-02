@@ -31,13 +31,13 @@ public class RunTimeJobDetail {
     }
 
     public String getJobId() {
-        return jobDetail.getKey().getGroup()+"."+jobDetail.getKey().getName();
+        return jobDetail.getKey().getGroup() + "." + jobDetail.getKey().getName();
     }
 
     public Trigger getTrigger(String triggerGroup, String triggerName) {
-        if(triggers!= null) {
-            for(Trigger trigger : triggers) {
-                if(trigger.getKey().getGroup().equals(triggerGroup) && trigger.getKey().getName().equals(triggerName)) {
+        if (triggers != null) {
+            for (Trigger trigger : triggers) {
+                if (trigger.getKey().getGroup().equals(triggerGroup) && trigger.getKey().getName().equals(triggerName)) {
                     return trigger;
                 }
             }

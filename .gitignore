@@ -1,0 +1,13 @@
+/target/
+/.gradle/
+/build/
+/gradle/
+gladew
+gladew.bat
+/gradlew
+/gradlew.bat
+.settings/
+.idea/*
+out/
+.idea/misc.xml
+
